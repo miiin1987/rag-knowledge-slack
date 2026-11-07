@@ -64,12 +64,12 @@ export function UploadForm({ token, onUploaded }: UploadFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="pdf-upload">PDFファイル</Label>
+        <Label htmlFor="doc-upload">文書ファイル（PDF / Word）</Label>
         <Input
-          id="pdf-upload"
+          id="doc-upload"
           ref={inputRef}
           type="file"
-          accept=".pdf,application/pdf"
+          accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           onChange={(e) => {
             setFile(e.target.files?.[0] ?? null);
             setStatus("idle");
@@ -79,7 +79,7 @@ export function UploadForm({ token, onUploaded }: UploadFormProps) {
           disabled={status === "uploading"}
         />
         <p className="text-xs text-muted-foreground">
-          上限: 10MB / 50ページ
+          上限: 10MB（PDF は最大 50 ページ）
         </p>
       </div>
 

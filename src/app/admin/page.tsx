@@ -85,7 +85,7 @@ export default function AdminPage() {
           <div>
             <h1 className="text-xl font-semibold">管理者ログイン</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              PDFのアップロードには管理者パスワードが必要です
+              文書のアップロードには管理者パスワードが必要です
             </p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -118,7 +118,7 @@ export default function AdminPage() {
         <div>
           <h1 className="text-xl font-semibold">管理画面</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            PDFをアップロードして検索インデックスを作成します
+            PDF / Wordをアップロードして検索インデックスを作成します
           </p>
         </div>
         <div className="flex gap-2">
@@ -135,7 +135,7 @@ export default function AdminPage() {
       </div>
 
       <section className="space-y-4 mb-8">
-        <h2 className="font-medium">PDFアップロード</h2>
+        <h2 className="font-medium">文書アップロード</h2>
         <UploadForm
           token={token}
           onUploaded={() => fetchDocuments(token)}
