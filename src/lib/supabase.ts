@@ -15,6 +15,10 @@ if (!supabaseServiceKey) {
 }
 
 // Service Role クライアント（サーバーサイドのみ）
+// db.schema = 'rag7': 案件7専用スキーマを使用。
+// .from() / .rpc() がすべて rag7.* にルーティングされ、
+// 案件3の public スキーマとは完全に独立する。
 export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: { persistSession: false },
+  db: { schema: "rag7" },
 });
