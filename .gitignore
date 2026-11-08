@@ -53,3 +53,6 @@ scripts/test-japanese.pdf
 
 .vercel
 .env*
+
+# Claude Code
+.claude/
