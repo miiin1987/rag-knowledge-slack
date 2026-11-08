@@ -1,7 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText, createTextStreamResponse } from "ai";
 import { buildRagContext, SYSTEM_PROMPT } from "@/lib/rag";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, checkDailyLimit } from "@/lib/rate-limit";
 
 export const maxDuration = 30;
 
@@ -13,7 +13,18 @@ const MAX_HISTORY_TURNS = 5;
 const MAX_OUTPUT_TOKENS = 600;
 
 export async function POST(request: Request) {
-  // ── 1. 分散レート制限 ──────────────────────────────────────
+  // ── 1. 日次グローバル上限チェック（rl:daily-rag7:YYYY-MM-DD） ──
+  const daily = await checkDailyLimit();
+  if (!daily.allowed) {
+    return new Response(
+      JSON.stringify({
+        error: "本日のデモ利用上限（150回）に達しました。明日またお試しください。",
+      }),
+      { status: 429, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  // ── 2. IP 単位レート制限（rl:chat-rag7 プレフィックス） ───────
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
     request.headers.get("x-real-ip") ??

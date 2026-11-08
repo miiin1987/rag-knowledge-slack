@@ -6,6 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { MessageList } from "./MessageList";
 import { useStreamingChat } from "@/lib/use-streaming-chat";
 
+const SAMPLE_QUESTIONS = [
+  "在宅勤務の申請方法を教えてください",
+  "試用期間は何ヶ月ですか？",
+  "会社のPCにソフトをインストールしてもいいですか？",
+  "会議のルールを教えてください",
+];
+
 export function ChatInterface() {
   const { messages, input, setInput, sendMessage, isLoading, error } =
     useStreamingChat();
@@ -28,9 +35,35 @@ export function ChatInterface() {
     [sendMessage, input]
   );
 
+  const handleSampleQuestion = useCallback(
+    (q: string) => {
+      sendMessage(q);
+    },
+    [sendMessage]
+  );
+
   return (
     <div className="flex flex-col h-full">
       <MessageList messages={messages} isLoading={isLoading} />
+
+      {/* 質問例ボタン（会話が空のときのみ表示） */}
+      {messages.length === 0 && !isLoading && (
+        <div className="pb-3">
+          <p className="text-xs text-muted-foreground mb-2">質問例（クリックで入力）：</p>
+          <div className="flex flex-wrap gap-2">
+            {SAMPLE_QUESTIONS.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => handleSampleQuestion(q)}
+                className="text-xs border border-border rounded-full px-3 py-1.5 hover:bg-accent hover:text-accent-foreground transition-colors text-left"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {error && (
         <p className="text-sm text-destructive text-center py-2">{error}</p>
