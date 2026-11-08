@@ -1,5 +1,5 @@
 -- ============================================================
--- 案件7 (rag-knowledge-slack) 専用スキーマ: rag7
+-- rag-knowledge-slack 専用スキーマ: rag7
 --
 -- 【前提】
 --   案件3の public スキーマと Supabase プロジェクトを共有します。
@@ -41,7 +41,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 -- ── スキーマ ────────────────────────────────────────────────────────
 CREATE SCHEMA IF NOT EXISTS rag7;
-COMMENT ON SCHEMA rag7 IS '案件7 (rag-knowledge-slack) 専用スキーマ。案件3の public スキーマとは完全に独立。';
+COMMENT ON SCHEMA rag7 IS 'rag-knowledge-slack 専用スキーマ。public スキーマとは完全に独立。';
 
 -- ============================================================
 -- テーブル定義
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS rag7.documents (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
-COMMENT ON TABLE  rag7.documents            IS '案件7専用: アップロード文書のメタデータ';
+COMMENT ON TABLE  rag7.documents            IS 'アップロード文書のメタデータ';
 COMMENT ON COLUMN rag7.documents.department IS '部署識別子。''all'' = 全部署共通文書。Phase 2 で部署別制御に使用。';
 
 -- ── rag7.chunks ──────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS rag7.chunks (
   created_at   TIMESTAMPTZ DEFAULT NOW()
 );
 
-COMMENT ON TABLE rag7.chunks IS '案件7専用: テキストチャンク + ベクトル埋め込み';
+COMMENT ON TABLE rag7.chunks IS 'テキストチャンク + ベクトル埋め込み';
 
 -- ── HNSW インデックス ────────────────────────────────────────────────
 -- HNSW は ivfflat と異なり空テーブルでも正確に動作し、INSERT のたびに自動更新される
